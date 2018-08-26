@@ -8,7 +8,7 @@ import TextFieldGroup from '../../common/components/controls/TextFieldGroup';
 import TextAreaFieldGroup from '../../common/components/controls/TextAreaFieldGroup';
 import InputGroup from '../../common/components/controls/InputGroup';
 import SelectListGroup from '../../common/components/controls/SelectListGroup';
-import { addCourse, getCourse } from '../actions/courseActions';
+import { enrollCourse, getCourse } from '../actions/courseActions';
 import { resetStore } from '../../common/actions/commonActions';
 import _ from "lodash";
 
@@ -19,6 +19,7 @@ class ViewCourse extends Component {
       lessonId: '0',
       lessonName: '',
 
+      courseId: '',
       name: '',
       code: '',
       description: '',
@@ -46,7 +47,7 @@ class ViewCourse extends Component {
       const course = nextProps.course;
       // Set component fields state
       this.setState({
-        _id: course._id,
+        courseId: course._id,
         name: course.name,
         code: course.code,
         description: course.description,
@@ -56,6 +57,13 @@ class ViewCourse extends Component {
         lesson: course.lesson,
       });
     }
+    if (nextProps.user) {
+      const user = nextProps.user;
+      // Set component fields state
+      this.setState({
+        learnerId: user.id,
+      });
+    }    
 
   }
 
@@ -69,7 +77,13 @@ class ViewCourse extends Component {
   }
   enrollCourse() {
     const { id } = this.props.match.params;
-    this.props.enrollCourse(id, () => {
+    const courseEnrollData = {
+      courseId: this.state.courseId,
+      learnerId: this.state.learnerId,
+      reviewPoint: 0,
+      createdDate: new Date(),
+    };
+    this.props.enrollCourse(courseEnrollData, () => {
       this.goBack();
     });    
   }
@@ -87,7 +101,6 @@ class ViewCourse extends Component {
     );
     var lesson = this.state.lesson;
     if (lesson) {
-      debugger
       lessonContent = (
         <div>
           <h4>Lesson code: <span class="label label-default">{lesson ? lesson.code : ''}</span></h4>
@@ -119,7 +132,7 @@ class ViewCourse extends Component {
           <div className="row">
             <div className="col-md-12 m-auto">
               <button className="btn btn-light" onClick={() => this.goBack()}>Go Back</button>
-              <h1 className="display-4 text-center">View Course</h1>
+              <h1 className="display-4 text-center">View Course333</h1>
             </div>
           </div>
           <div className="row">
@@ -161,6 +174,6 @@ const mapStateToProps = state => {
   };
 }
 
-export default connect(mapStateToProps, { getCourse, addCourse, resetStore })(
+export default connect(mapStateToProps, { getCourse, enrollCourse, resetStore })(
   withRouter(ViewCourse)
 );

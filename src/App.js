@@ -19,11 +19,11 @@ import Test from './modules/user/components/Test';
 
 import Dashboard from './modules/common/components/layout/Dashboard';
 
-import ListCourse from './modules/guess/components/ListCourse';
-import ViewCourse from './modules/guess/components/ViewCourse';
+import ListCourse from './modules/learner/components/ListCourse';
+import ViewCourse from './modules/learner/components/ViewCourse';
 
-import ListLearnerCourse from './modules/learner/components/ListLearnerCourse';
-import ViewLearnerCourse from './modules/learner/components/ViewLearnerCourse';
+import ListMyCourse from './modules/learner/components/ListMyCourse';
+import ViewMyCourse from './modules/learner/components/ViewMyCourse';
 
 import NotFound from './modules/common/components/not-found/NotFound';
 
@@ -69,9 +69,9 @@ class App extends Component {
                 <PrivateRoute exact path="/course" component={ListCourse} />
               </Switch>
 
-              <Route exact path="/learnercourse/:id" component={ViewLearnerCourse} />
+              <Route exact path="/mycourse/:id" component={ViewMyCourse} />
               <Switch>
-                <PrivateRoute exact path="/learnercourse" component={ListLearnerCourse} />
+                <PrivateRoute exact path="/mycourse" component={ListMyCourse} />
               </Switch>
 
               <Route exact path="/not-found" component={NotFound} />

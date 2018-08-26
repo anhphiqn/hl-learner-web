@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
-import { getCourses, deleteCourse } from '../actions/courseActions';
+import { getUnEnrolledCourses, deleteCourse } from '../actions/courseActions';
 import Spinner from '../../common/components/controls/Spinner';
 import TextFieldGroup from '../../common/components/controls/TextFieldGroup';
 
@@ -20,7 +20,22 @@ class ListCourse extends Component {
   
   componentDidMount() {
     console.log('ListCourse componentDidMount');
-    this.props.getCourses(this.state.searchTerm,  this.props.user.email);
+    this.doSearch();
+  }
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.errors) {
+      console.log('componentWillReceiveProps ', nextProps.errors);
+      this.setState({ errors: nextProps.errors });
+    }
+/*
+    if (nextProps.user) {
+      const user = nextProps.user;
+      // Set component fields state
+      this.setState({
+        learnerId: user.id,
+      });
+    }    
+*/
   }
 
   onDeleteClick(id) {
@@ -29,7 +44,7 @@ class ListCourse extends Component {
   }
   doSearch() {
     console.log('doSearch');
-    this.props.getCourses(this.state.searchTerm,  this.props.user.email);
+    this.props.getUnEnrolledCourses(this.state.searchTerm, this.props.user.id, this.props.user.email);
   }
 
   onChange(e) {
@@ -132,6 +147,6 @@ const mapStateToProps = state => {
   };
 };
 
-export default connect(mapStateToProps, { getCourses, deleteCourse })(
+export default connect(mapStateToProps, { getUnEnrolledCourses, deleteCourse })(
   ListCourse
 );
